@@ -6,11 +6,9 @@
 
 </head>
 <body>
-<form action="${serverAppRoot}/admin/authenticate" method="post">
-    <input name="username" value="username">
-    <input type="password" name="password" value="password">
-    <input type="submit">
-</form>
+<c:forEach items="${captures}" var="capture">
+    <a href="${capture.href}">${capture.timeFrame} - Move-Rate = ${capture.moveRate}</a><<br>
+</c:forEach>
 </body>
 </html>
 

@@ -7,16 +7,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by mephala on 6/2/17.
  */
-import java.io.IOException;
 
 public class SecurityInterceptor implements HandlerInterceptor {
 
 
-    private static final String serverAppRoot = "/ww";
+    public static final String serverAppRoot = "/ww";
     private Log logger = LogFactory.getLog(getClass());
 
     @Override
