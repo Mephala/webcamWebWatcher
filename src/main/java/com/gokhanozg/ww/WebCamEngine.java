@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -28,12 +29,13 @@ public class WebCamEngine {
     //    private static final String RECORD_FOLDER = "/home/mephala/wcam/";
     private static final String RECORD_FOLDER = "D:\\wcam\\";
     private static final Long CHUNK_LEN = 60000L;
-    private static final Integer TARGET_FPS = 25;
+    private static final Integer TARGET_FPS = 180;
     private static final Boolean DEBUG_FFMPEG_ = Boolean.FALSE;
     //    private static final String SERVER_WEBAPP_FOLDER = "/usr/local/programming/projects/java/webcamWebWatcher/src/main/webapp/static";
     private static final String SERVER_WEBAPP_FOLDER = "C:\\Users\\masmas\\Desktop\\Programming\\projects\\webcamWebWatcher\\src\\main\\webapp\\static";
     private static final Locale LOCALE = Locale.forLanguageTag("tr");
     private static final SimpleDateFormat SDF = new SimpleDateFormat("dd MMMMM EEEEEE HH:mm", LOCALE);
+    private static final boolean WINDOWS = true;
     private static Long STOP_BETWEEN_IMAGES = null;
     private static WebCamEngine instance;
 
@@ -303,9 +305,22 @@ public class WebCamEngine {
                     }
                     FFMPEG ffmpeg = new FFMPEG(count, CHUNK_LEN, CAPTURE_WIDTH, CAPTURE_HEIGTH, completedRecordFolder);
                     String command = ffmpeg.createExeCommand();
+                    Process p = null;
                     logger.info("Running command:" + command);
-                    Process p = Runtime.getRuntime().exec(command);
-                    showFFMPEGDebugIfNecessary(p);
+                    if (!WINDOWS) {
+                        p = Runtime.getRuntime().exec(command);
+                        showFFMPEGDebugIfNecessary(p);
+                    } else {
+                        String[] wcommand =
+                                {
+                                        "cmd",
+                                };
+                        p = Runtime.getRuntime().exec(wcommand);
+                        PrintWriter stdin = new PrintWriter(p.getOutputStream());
+                        stdin.println(command);
+                        stdin.close();
+                        showFFMPEGDebugIfNecessary(p);
+                    }
                     int returnCode = p.waitFor();
                     while (!motionDetectionFuture.isDone()) ;
                     if (returnCode == 0 && motionDetectionFuture.get()) {
@@ -340,12 +355,17 @@ public class WebCamEngine {
     }
 
     private void showFFMPEGDebugIfNecessary(Process p) {
-        if (Boolean.TRUE.equals(DEBUG_FFMPEG_)) {
+        if (WINDOWS) {
             new Thread(new SyncPipe(p.getErrorStream(), System.err)).start();
             new Thread(new SyncPipe(p.getInputStream(), System.out)).start();
-            //                    PrintWriter stdin = new PrintWriter(p.getOutputStream());
+        } else {
+            if (Boolean.TRUE.equals(DEBUG_FFMPEG_)) {
+                new Thread(new SyncPipe(p.getErrorStream(), System.err)).start();
+                new Thread(new SyncPipe(p.getInputStream(), System.out)).start();
+                //                    PrintWriter stdin = new PrintWriter(p.getOutputStream());
 //                    stdin.println(command);
 //                    stdin.close();
+            }
         }
     }
 
