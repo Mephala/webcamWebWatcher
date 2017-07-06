@@ -198,6 +198,9 @@
                 <configuration>
                     <path>/ww</path>
                     <port>8080</port>
+                    <systemProperties>
+                        <JAVA_OPTS>-Xms1024m -Xmx4096m -XX:MaxPermSize=256m</JAVA_OPTS>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
