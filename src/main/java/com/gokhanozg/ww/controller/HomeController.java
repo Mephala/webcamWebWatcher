@@ -25,4 +25,9 @@ public class HomeController {
         model.addObject("captures", completedCaptures);
         return model;
     }
+
+    @RequestMapping(value = "/play", method = RequestMethod.GET)
+    public void play(HttpServletRequest request, HttpServletResponse response) {
+        PlayCatSound.play();
+    }
 }
