@@ -26,16 +26,16 @@ public class WebCamEngine {
     private static final String WCAM_NAME = "C920";
     private static final Integer CAPTURE_WIDTH = 1920;
     private static final Integer CAPTURE_HEIGTH = 1080;
-        private static final String RECORD_FOLDER = "/home/mephala/wcam/";
+    private static final String RECORD_FOLDER = "D:\\wcam\\";
 //    private static final String RECORD_FOLDER = "D:\\wcam\\";
     private static final Long CHUNK_LEN = 60000L;
     private static final Integer TARGET_FPS = 60;
-    private static final Boolean DEBUG_FFMPEG_ = Boolean.FALSE;
-        private static final String SERVER_WEBAPP_FOLDER = "/usr/local/programming/projects/webcamWebWatcher/src/main/webapp/static";
-//    private static final String SERVER_WEBAPP_FOLDER = "C:\\Users\\masmas\\Desktop\\Programming\\projects\\webcamWebWatcher\\src\\main\\webapp\\static";
+    private static final Boolean DEBUG_FFMPEG_ = Boolean.TRUE;
+    //        private static final String SERVER_WEBAPP_FOLDER = "/usr/local/programming/projects/webcamWebWatcher/src/main/webapp/static";
+    private static final String SERVER_WEBAPP_FOLDER = "C:\\p\\java\\webcamWebWatcher\\src\\main\\webapp\\static";
     private static final Locale LOCALE = Locale.forLanguageTag("tr");
     private static final SimpleDateFormat SDF = new SimpleDateFormat("dd MMMMM EEEEEE HH:mm", LOCALE);
-    private static final boolean WINDOWS = false;
+    private static final boolean WINDOWS = true;
     private static Long STOP_BETWEEN_IMAGES = null;
     private static WebCamEngine instance;
 
